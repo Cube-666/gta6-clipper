@@ -57,7 +57,14 @@ if (match === null) {
   fail(`VIDEO.json "url" does not look like a YouTube video address: ${url}`);
 }
 
-mkdirSync(outDir, { recursive: true });
-copyFileSync(videoFile, outFile);
+try {
+  mkdirSync(outDir, { recursive: true });
+  copyFileSync(videoFile, outFile);
+} catch (error) {
+  fail(
+    `could not write ${outFile}: ` +
+      (error instanceof Error ? error.message : String(error)),
+  );
+}
 console.log(`gta6-clipper: VIDEO.json copied to ${outFile}`);
 console.log(`gta6-clipper: video id ${match[1]}`);
